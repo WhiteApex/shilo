@@ -50,65 +50,44 @@
             background-color: #ff6347;
         }
     </style>
-
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript">
-       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-       m[i].l=1*new Date();
-       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-       ym(100212341, "init", {
-            clickmap:true,
-            trackLinks:true,
-            accurateTrackBounce:true
-       });
-    </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/100212341" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->
 </head>
 <body>
 
     <h2>Введите номер телефона и испытайте удачу!</h2>
-    <input type="tel" id="phone" value="+7" required oninput="keepPrefix(this)">
-    <button onclick="submitPhone()">Испытать удачу</button>
+    <form id="luckForm">
+        <input type="tel" id="phone" value="+7" required>
+        <button type="submit">Испытать удачу</button>
+    </form>
 
-<script>
-    function keepPrefix(input) {
-        if (!input.value.startsWith('+7')) {
-            input.value = '+7';
-        }
-    }
+    <script>
+        document.getElementById('luckForm').addEventListener('submit', function(e){
+          e.preventDefault();
 
-    function submitPhone() {
-        const phoneInput = document.getElementById('phone');
-        const phone = phoneInput.value.trim();
+          const phoneInput = document.getElementById('phone');
+          const phone = phoneInput.value.trim();
 
-        if (phone.length <= 2) {
-            alert('Введите номер телефона');
+          if (phone.length <= 2) {
+            alert('Введите корректный номер!');
             return;
-        }
+          }
 
-        fetch('https://script.google.com/macros/s/AKfycbwtH5z-Rgw969sfNRhUK_gF795ZHQrKekLDv-3dJ0hMEW8Dx0XU6NdqBd3T6wjecIR86A/exec', {
+          fetch('https://script.google.com/macros/s/AKfycbw4TUejwzRflwhr7CJfMK91Fp99xggaeiGlhusu08ex9drSQB02dkhxGgc45NWiKWow/exec', {
             method: 'POST',
             mode: 'no-cors',
-            headers: {
-                'Content-Type': 'text/plain'
-            },
-            body: JSON.stringify({ phone: phone })
-        })
-        .then(() => {
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({phone: phone})
+          })
+          .then(() => {
             window.location.href = 'https://wheelofnames.com/ru/w62-ff6';
-        })
-        .catch(error => {
-            alert('Ошибка при отправке данных');
-            console.error(error);
+          })
+          .catch(error => {
+            alert('Ошибка при отправке данных!');
+            console.error('Ошибка:', error);
+          });
         });
-    }
+    });
+
 </script>
-
-
 
 </body>
 </html>
