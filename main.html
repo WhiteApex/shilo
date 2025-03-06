@@ -71,15 +71,21 @@
 <body>
 
     <h2>Введите номер телефона и испытайте удачу!</h2>
-    <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" required>
+    <input type="tel" id="phone" value="+7" required oninput="keepPrefix(this)">
     <button onclick="submitPhone()">Испытать удачу</button>
 
     <script>
+        function keepPrefix(input) {
+            if (!input.value.startsWith('+7')) {
+                input.value = '+7';
+            }
+        }
+
         function submitPhone() {
             const phoneInput = document.getElementById('phone');
             const phone = phoneInput.value.trim();
 
-            if (!phone) {
+            if (phone.length <= 2) {
                 alert('Введите номер телефона');
                 return;
             }
