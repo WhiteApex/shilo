@@ -73,6 +73,11 @@
                 return;
             }
 
+	    if (!/^(?:\+7|8)[0-9]{10}$/.test(phone)) {
+            	alert('Неверный формат телефона.');
+    	   	return;
+	    }
+
             fetch('https://script.google.com/macros/s/AKfycbxJ-qxUiZb9S9QffrpCmEAphC0Ld-AkaoJKqBJnbFBIM4SxYCAwNYs6n6va01oPPTuhHA/exec', {
                 method: 'POST',
                 mode: 'no-cors',
