@@ -84,29 +84,7 @@
                 return;
             }
 
-            fetch('https://YOUR_AMOCRM_API_ENDPOINT', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer YOUR_AMOCRM_API_TOKEN'
-                },
-                body: JSON.stringify({
-                    phone: phone
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Ошибка отправки');
-                }
-                return response.json();
-            })
-            .then(data => {
-                window.location.href = 'https://wheelofnames.com/ru/w62-ff6';
-            })
-            .catch(error => {
-                alert('Произошла ошибка, попробуйте снова');
-                console.error(error);
-            });
+            window.location.href = 'https://wheelofnames.com/ru/w62-ff6';
         }
     </script>
 
