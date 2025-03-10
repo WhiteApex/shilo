@@ -1,110 +1,154 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Испытай удачу!</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #ffffff;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 0;
-            padding: 0 15px;
-            text-align: center;
-        }
-        h2 {
-            font-size: 28px;
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
-        input {
-            width: 100%;
-            max-width: 320px;
-            padding: 15px;
-            font-size: 16px;
-            border: none;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            outline: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        button {
-            padding: 15px 30px;
-            font-size: 16px;
-            font-weight: 500;
-            border: none;
-            border-radius: 10px;
-            background-color: #ffffff;
-            color: #764ba2;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Испытай удачу!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #ffffff;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 0 15px;
+      text-align: center;
+    }
+    h2 {
+      font-size: 28px;
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+    input {
+      width: 100%;
+      max-width: 320px;
+      padding: 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      outline: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 16px;
+      font-weight: 500;
+      border: none;
+      border-radius: 10px;
+      background-color: #ffffff;
+      color: #764ba2;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+    #thankYou {
+      display: none;
+      font-size: 20px;
+      font-weight: 500;
+      margin-top: 20px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
 
-    <h2>Введите номер телефона и испытайте удачу!</h2>
-    <form id="luckForm">
-        <input type="tel" id="phone" value="+7" required>
-        <button type="submit">Испытать удачу</button>
-    </form>
+  <h2>Введите номер телефона и испытайте удачу!</h2>
+  <form id="luckForm">
+    <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" required>
+    <button type="submit">Испытать удачу</button>
+  </form>
 
-    <script>
-        document.getElementById('luckForm').addEventListener('submit', function(e){
-            e.preventDefault();
+  <div id="thankYou">Спасибо! Вы участвуете в розыгрыше 🎉</div>
 
-            const phoneInput = document.getElementById('phone');
-            const phone = phoneInput.value.trim();
+  <!-- Маска телефона -->
+  <script src="https://unpkg.com/imask"></script>
 
-            if (phone.length <= 2) {
-                alert('Пожалуйста, введите номер телефона.');
-                return;
-            }
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyov-jONH4j_SZG1UzC5jgbkaVgyAI1vRooXYu-1vRSWjO1rSDoiDrh1H2-NLvnc0oBKg/exec';
+    const form = document.getElementById('luckForm');
+    const phoneInput = document.getElementById('phone');
+    const thankYouMsg = document.getElementById('thankYou');
 
-	    if (!/^(?:\+7|8)[0-9]{10}$/.test(phone)) {
-            	alert('Неверный формат телефона.');
-    	    	return;
-	    }
+    // Маска телефона
+    const maskOptions = { mask: '+{7} (000) 000-00-00' };
+    const mask = IMask(phoneInput, maskOptions);
 
-            fetch('https://script.google.com/macros/s/AKfycbxJ-qxUiZb9S9QffrpCmEAphC0Ld-AkaoJKqBJnbFBIM4SxYCAwNYs6n6va01oPPTuhHA/exec', {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({phone: phone})
-            });
+    // Очистка номера
+    function cleanPhone(phone) {
+      return phone.replace(/[^+\d]/g, '');
+    }
 
-            window.location.href = 'https://wheelofnames.com/ru/w62-ff6';
-        });
-    </script>
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
 
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript" >
-       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-       m[i].l=1*new Date();
-       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+      const rawPhone = phoneInput.value.trim();
+      const cleanedPhone = cleanPhone(rawPhone);
 
-       ym(100212341, "init", {
-            clickmap:true,
-            trackLinks:true,
-            accurateTrackBounce:true
-       });
-    </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/100212341" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->
+      if (cleanedPhone.length < 10) {
+        alert('Пожалуйста, введите корректный номер телефона.');
+        return;
+      }
+
+      // Проверка на повторный ввод
+      const lastPhone = localStorage.getItem('lastPhone');
+      if (lastPhone === cleanedPhone) {
+        alert('Вы уже участвовали ранее с этим номером. Удачи снова! 😊');
+      }
+
+      // Сохраняем номер в localStorage
+      localStorage.setItem('lastPhone', cleanedPhone);
+
+      // Создаем данные для отправки
+      const formData = new FormData();
+      formData.append('phone', cleanedPhone);
+      formData.append('datetime', new Date().toLocaleString('ru-RU'));
+
+      // Отправка в Google Таблицу
+      fetch(scriptURL, {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors'
+      });
+
+      // Сообщение "Спасибо"
+      thankYouMsg.style.display = 'block';
+
+      // Редирект через 3 секунды
+      setTimeout(() => {
+        window.location.href = 'https://wheelofnames.com/ru/w62-ff6';
+      }, 3000);
+    });
+  </script>
+
+  <!-- Yandex.Metrika -->
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();
+    for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) return; }
+    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(100212341, "init", {
+      clickmap:true,
+      trackLinks:true,
+      accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/100212341" style="position:absolute; left:-9999px;" alt=""/></div></noscript>
 
 </body>
 </html>
