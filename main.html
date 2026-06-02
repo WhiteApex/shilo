@@ -120,7 +120,7 @@
 <script src="https://unpkg.com/imask"></script>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbz6nkv-vvLM6bdxt-4-khKxsoVdLKuwudcYHALy8sDoXvinXxmFxgR4x2nmWMlsqRlL/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzFHIKvCHxUiDLipNItJuap7bZB706d8FLGYaRmrNPOEgwm5ExkNZsABFgIDfI3nZxR/exec';
     const form = document.getElementById('luckForm');
     const phoneInput = document.getElementById('phone');
     const thankYouMsg = document.getElementById('thankYou');
@@ -210,7 +210,7 @@
             // Номера нет — показываем сообщение и редиректим
             thankYouMsg.style.display = 'block';
             setTimeout(() => {
-                window.location.href = 'wheel.html?phone=' + encodeURIComponent(cleanedPhone);
+                window.location.href = 'https://aleksey19988.github.io/wheel/wheel.html?phone=' + encodeURIComponent(cleanedPhone);
             }, 1500);
         });
     });
